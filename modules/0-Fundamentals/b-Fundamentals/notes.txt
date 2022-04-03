@@ -1,0 +1,92 @@
+Always keep dev console open: F12 or ctrl-shift-i
+Go to network tab and select "Disable cache" in order to view 
+requests everytime page is loaded.
+
+Server and Browser communicate using HTTP protocol
+HTTP GET: The network tab shows GET requests from browser to server
+Inspect individual GET request by selecting it and going to headers tab
+In this case: Visit https://studies.cs.helsinki.fi/exampleapp/
+First GET request.
+Checking the headers tab of the GET request indicates a 
+request to url.com/exampleapp
+Checking the Response tab show the response sent back from
+server to browser. Selecting raw, shows the code.
+
+Second GET request.
+Second request happens because response to first request 
+includes an image, therefore, browser needs to request image
+in order to display it along with first GET request.
+<img src="kuva.png"/>
+Therefore, checking the headers tab of  second GET request 
+indicates a request to url.com/exampleapp/kuva.png
+Checking Response tab shows image being requested/sent back
+
+Sketch:
+
+Browser                                                 Server
+
+HTTP GET url.com/exampleapp------------------------------>
+<--------------------------HTML code/Response-------------
+HTTP GET url.com/exampleapp/kuva.png--------------------->
+<--------------------------kuva.png/image response--------
+
+After the above the browser displays page correctly while having 
+Response code and images needed to display page.
+
+Traditional web application: Visit https://studies.cs.helsinki.fi/exampleapp/notes
+Upon visiting an url, the browser sends request to server for HTML
+doc and other media required to render the page. 
+In traditional applications, logic is kept on the server.
+Another example of website request:
+First GET request is to url.com/app which returns HTML containing 
+a link to a javascript script. 
+Second GET request is to obtain the script indicated above.
+After recieving the script, browser executes the code within it
+At the end of the script, there is a link to a data.json file
+Third GET request is to obtain the data.json file.
+Finally after obtaining data.json file, the browser follows
+instruction to display data contained in the data.json file
+Individual GET requests can be checked like with previous example
+to check Header and Response tabs
+
+Diagram for serie of requests needed to render above site
+
+Browser                                                    Server
+
+HTTP GET url.com/notes------------------------------------------>
+<----------------------------HTML code/Response------------------
+HTTP GET file.css----------------------------------------------->
+<---------------------------file.css/Response--------------------
+HTTP GET file.js------------------------------------------------>
+<---------------------------file.js------------------------------
+HTTP GET data.json---------------------------------------------->
+<---------------------------data.json----------------------------
+Page finally displays data
+
+Forms and HTTP POST
+Hitting submit button on form, sends data within form to server in POST
+request. Server responds with status code 302 which tells browser to redirect
+and perform a HTTP request to address indicated in header's location. In this case
+the redirect url is back to the updated page containing the new info. 
+Above leads to 3 more GET requests as diagrammed above. css, js and data.json are requested.
+data.json contains newly added entry and therefore page now displays all previous data
++ new entry.
+The form have action and method attributes which determine what happens when form is submitted
+action="/new_note", indicates where to send the data
+method="POST" 
+on the server we have a route such to intercept and process the data:
+app.post('new_note', (req, res)=+{
+        notes.push({            //add content submitted to end of notes array
+            content:req.body.note,
+            date: new Date(),
+                })
+        return res.redirect('/notes') //reditect user to this url after submittion
+        })
+
+Single page apps - New way
+Browser only gets resources as needed from server via user interactions with app
+A single page is rendered and resources fetched as needed via user interaction.
+Forms don't use action and method attributes. Instead, content of form is turned into
+json format and sent to the server using POST request which tells server content is
+in json format. Server responds with 201 status/created.There is no redirect, browser 
+remains in same page.
