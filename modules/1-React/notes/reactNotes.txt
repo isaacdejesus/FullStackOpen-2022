@@ -1,0 +1,71 @@
+npx create-react-app app_name
+React the 'root' component is App component. We then build the app
+by combining other components on top of root/App
+
+index.js is entry point of the application
+--------------------------
+ReactDom.render(<App/>, document.getElementById('root')
+Above command renders the App component within a div found at
+public/index.html with the id of 'root'
+
+App.js our first component
+--------------------------
+Components are defined as functions
+Do not define components within other components
+React Component names must be Capitalized. app would give an error
+React requires a root element in our case a div with id root
+Without it, we get an error. We can bypass it by using fragments.
+Fragments, we use:
+const App....
+return(
+<>
+JSX code
+</>
+    )
+Components are reusable pieces of code
+We can define another component named Hello which return "hello world"
+Then call it 3 times:
+<Hello />
+<Hello />
+<Hello />
+
+JSX 
+-------------------------
+React components are written in JSX which is compiled by babel into js
+JSX allows us to write dynamic content within code using {}
+All tags in JSX need to be closed
+<App/>
+<br/> instead of <br> and so on.
+
+
+Props allow us to pass data from parent component to child component
+-------------------------
+
+Hooks - 
+-------------------------------------------
+useState hook is composed of a variable to hold state and a function to change the state
+The state can be a single value, an object or even an array
+See partc for examples
+Hooks should only be called inside body of a component
+Hooks should not be defined inside a loop, conditional or outside of a component definition
+
+Event handlers
+--------------------------------------
+<button onClick=function or reference to a function>button</button>
+The event handlers must be equals to a function or a reference to a function such as:
+<button onClick={() => setValue(0)}>button</button>
+Above we pass a function
+Next we use a reference to a function defined elsewhere
+<button onClick={handleClick}>button </button>
+These two methods are the only valid ways to use event handlers
+
+Passing event handlers to child components
+---------------------------------------------
+We can have the button component and pass the event handler to it
+const Button = (props) => (
+<button onClick={props.handleClick}>{props.text}</button>
+        )
+
+Next we call component and pass it an event handling function like so
+<Button handleClick={() => setValue(122)} text="someeh" />
+We pass the function as prop to the button component
