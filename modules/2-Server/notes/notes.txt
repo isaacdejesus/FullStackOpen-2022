@@ -1,0 +1,72 @@
+Debugging
+----------------------------------------------
+Use console.log to debug.
+Separate values to log with ',' instead of + 
+Ex -> console.log('props value is', props);
+The above outputs a string.
+Ex -> console.log('props value is' + props)
+results in logging: "props value is [object object]"
+Not useful for debugging
+
+Debug from dev console
+-----------------------------
+Write debugger anywhere in the code within the dev console
+It will cause program to stop when reaching debugger
+We can then go to console and inspect current state of vars
+Also possible to execute code line by line 
+Also possible to add breakpoints in Sources tab
+Chrome has React dev tools extension that allows inspection of components
+
+---------------------------------------------------
+JavaScript arrays
+----------------------------
+We will use functional programming methods available to arrays
+such as find, filter and map. 
+
+------------------------------------------------------
+Axios is used to set up async communication between front end and server
+Axios returns a promise. Promise can be of 3 times:
+Pending - Final value not available yet
+Fullfilled - Operation has been completed and final value is available.
+Also known as resolved. Happens there is a successful connectiont to resource/server
+Rejected - error, represents a failed operation. Ex. database endpoint doesn't exist
+
+Axios needs to be installed and imported before usage
+import axios from 'axios'
+axios.get('http://localhost:3001/notes')   //axios attempts to connect and obtain json data from localhost port 3001
+Once successful promises has been obtained we can use the .then method to obtain the response/json file
+such as:
+axios
+.get('http://localhost:3001/notes')
+.then(response => {
+    const notes = response.data  //assign data from response object to notes var
+    ReactDOM.render( //then pass object/data to App as prop
+    <App notes={notes} />
+    document.getElementById('root')
+    )
+    })
+---------------------------------------
+Effect hooks
+useEffect kick in after components have rendered
+useEffect takes 2 parameters
+First parameter is the effect function
+Second parameter is how often funtion should run
+if [], function is only run once during initial rendering of component
+
+const hook = () => {
+    axios
+        .get('http://localhost:3001/notes')
+        .then(response => {
+            setNotes(response.data)
+                })
+}
+useEffect(hook, []) //first parameter is hook function and second is []
+
+Another way to define useEffect
+useEffect(() => { //effect function
+    axios
+        .get(url)
+        .then(response =>{
+            setNotes(response.data)
+                })
+        }, [])  //second parameter
