@@ -90,3 +90,28 @@ Forms don't use action and method attributes. Instead, content of form is turned
 json format and sent to the server using POST request which tells server content is
 in json format. Server responds with 201 status/created.There is no redirect, browser 
 remains in same page.
+-----------------------------------------------------------------------------------------------
+DOM - Document Object Model
+===============================================================================================
+DOM is an API that allows modification of html element tree that compose web page
+html
+    head
+        link
+        script
+    body
+        div
+            h1
+            div
+                ul
+                    li
+                    li
+                    li
+            form
+                input
+                input
+        /div>
+    </body>
+</html>
+
+- Document is the topmost/root node of the DOM.
+  Can be accesses by typing document in console

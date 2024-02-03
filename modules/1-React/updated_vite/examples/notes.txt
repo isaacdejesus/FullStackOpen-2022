@@ -1,0 +1,9 @@
+[+] Create React app using Vite
+=======================================================================
+-> npx create vite@latest NAME
+   Allows to select template to use
+-> npx create vite@latest NAME -- --template react
+   creates app from template
+-----------------------------------------------------------------------
+
+
