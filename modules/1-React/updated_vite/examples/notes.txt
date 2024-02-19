@@ -5,5 +5,14 @@
 -> npx create vite@latest NAME -- --template react
    creates app from template
 -----------------------------------------------------------------------
+[+] Avoid <div> <p> errors
+=======================================================================
+-> vim tsconfig.json
+Change:
+"compilerOptions": {
+    "moduleResolution": "node"
+}
+-----------------------------------------------------------------------
+
 
 
