@@ -1,8 +1,8 @@
 [+] Create React app using Vite
 =======================================================================
--> npx create vite@latest NAME
+-> npm create vite@latest NAME
    Allows to select template to use
--> npx create vite@latest NAME -- --template react
+-> npm create vite@latest NAME -- --template react
    creates app from template
 -----------------------------------------------------------------------
 [+] Avoid <div> <p> errors
@@ -13,6 +13,34 @@ Change:
     "moduleResolution": "node"
 }
 -----------------------------------------------------------------------
-
+[+] Notes
+=======================================================================
+    - React component names should be capitalized. Ex. Footer instead of
+      footer
+    - React component needs a root element. Meaning content needs to be
+      wrapped within a div or <> fragment
+      const App = () => { //stuff within return() needs to be within div or <>
+          return (
+          <>
+            <h1>Gello</h1>
+            <Hello name="isaac" />
+          </>
+                 )
+      }
+      - React can't render entire objects. Break object down to properties
+        in order to render object
+        const App = () => {
+            const friends = [
+            {name: 'teresa', age: 24},
+            {name: 'maya', age: 24},
+            ]
+            return (
+                <div>
+                    <p>{friends[0]}</p>  //won't render
+                    <p>{friends[0].name} {friends[0].age}</p>  //will work
+                </div> 
+                )
+        }
+-----------------------------------------------------------------------
 
 
