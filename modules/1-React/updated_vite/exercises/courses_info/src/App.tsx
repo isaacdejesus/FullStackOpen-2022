@@ -1,6 +1,6 @@
-import {Courses, Part} from '../types';
+import {Courses, } from './types';
 const App = () => {
-    const course = {
+    const course: Courses = {
         name: 'Half Stack Application development',
         parts : [
             {
@@ -25,28 +25,28 @@ const App = () => {
         </div>
     )
 }
-const Header = (props:Courses) => {
+const Header = ({course_object}:{course_object: Courses}) => {
     return(
-        <h1> {props.course_object.name}</h1>
+        <h1> {course_object.name}</h1>
     )
 }
-const Content = (props:Courses) => {
+const Content = ({course_object}: {course_object: Courses}) => {
     return(
         <>
-            <Part_ part={props.course_object.parts[0].name} exercise={props.course_object.parts[0].exercises}/>
-            <Part_ part={props.course_object.parts[1].name} exercise={props.course_object.parts[1].exercises}/>
-            <Part_ part={props.course_object.parts[2].name} exercise={props.course_object.parts[2].exercises}/>
+            <Part_ part={course_object.parts[0].name} exercise={course_object.parts[0].exercises}/>
+            <Part_ part={course_object.parts[1].name} exercise={course_object.parts[1].exercises}/>
+            <Part_ part={course_object.parts[2].name} exercise={course_object.parts[2].exercises}/>
         </>
     )
 }
-const Total = (props:Courses) => {
+const Total = ({course_object}: {course_object: Courses}) => {
     return(
-        <p> Number of exercises {props.course_object.parts[0].exercises + props.course_object.parts[1].exercises + props.course_object.parts[2].exercises}</p>
+        <p> Number of exercises {course_object.parts[0].exercises + course_object.parts[1].exercises + course_object.parts[2].exercises}</p>
     )
 }
-const Part_ = (props:Part) => {
+const Part_ = ({part, exercise}: {part: string, exercise: number}) => {
     return(
-       <p>{props.part} {props.exercise}</p> 
+       <p>{part} {exercise}</p> 
     )
 }
 export default App

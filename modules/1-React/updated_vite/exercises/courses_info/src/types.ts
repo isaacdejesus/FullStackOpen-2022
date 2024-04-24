@@ -6,5 +6,5 @@ export interface Courses {
 
 export interface Part {
     name: string;
-    exercises: string;
+    exercises: number;
 }
