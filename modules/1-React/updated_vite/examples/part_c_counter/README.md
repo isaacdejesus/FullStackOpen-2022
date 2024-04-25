@@ -5,7 +5,7 @@
 ## App showcases usage of state, event handling and passing props to child components
 ---------------------------------------------------------------------------------------------------
 ## State
-```js
+```javascript
 const App = () => {
     const [counter , set_counter] = useState<number>(0);
     setTimeout(  //invoke set timeout function
@@ -19,11 +19,13 @@ const App = () => {
     )
 }
 ```
-- ```js const [counter, set_counter] = useState<number>(0);```
+- ```javascript 
+    const [counter, set_counter] = useState<number>(0);
+  ```
 Defines state: counter is set to initial value of 0 and set_counter function is used to 
 modify state/update counter value
 - Next invoke the setTimeout function 
-```js
+```javascript
 setTimeout(  //invoke set timeout function
     () => set_counter(counter + 1),
     1000
@@ -54,23 +56,23 @@ setTimeout(  //invoke set timeout function
             </button>
         </div>
     )
-}
+  }
   ```
 - Note: There are 2 ways to pass event handlers. 
 - See "Increment": Can pass a reference to a funtion. This is the prefered way to handle
   events
 - See "Reset": Can define an inline function
     - Note: Event handlers are functions! .:. the following is not allowed:
-    ```js
+```javascript
         <button onClick={set_counter(counter + 1)}>   //Not valid bc handler must be a function
             Increment
         </button>
-    ```
-    ```js
+```
+```javascript
         <button onClick={()=> set_counter(counter + 1)}>   //valid inline handler function
             Increment
         </button>
-    ```
+```
 ---------------------------------------------------------------------------------------------------
 ## Passing state to child components
 ===================================================================================================
@@ -78,7 +80,8 @@ setTimeout(  //invoke set timeout function
 - Best practice for passing state is to lift state to closest common ancestor
 - handler function can be passed as props to child component to call when action is triggered
 - See code: Created <Button /> Component and pass handler function and text to be displayed 
-  as props: ```js <Button handler={handler_func} text="text" />```
+  as props: 
+```js <Button handler={handler_func} text="text" />```
 ---------------------------------------------------------------------------------------------------
 [+] IMPORTANT!
 ===================================================================================================
