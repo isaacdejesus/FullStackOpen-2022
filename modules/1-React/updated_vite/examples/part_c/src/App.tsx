@@ -1,9 +1,11 @@
-const Hello = (props: person) => {
+const Hello = ({name, age}: {name: string, age: number}) => {
+    const born_year = () => new Date().getFullYear()
     return (
         <div>
             <p>
-                Hello {props.name}, you are {props.age} years old
+                Hello {name}, you are {age} years old
             </p>
+            <p>So you were probably born in {born_year()}</p>
         </div>
     )
 }
@@ -20,7 +22,3 @@ const App = () => {
 }
 export default App
 
-interface person {
-    name: string
-    age: number
-}

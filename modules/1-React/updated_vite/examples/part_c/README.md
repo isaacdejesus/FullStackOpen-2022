@@ -1,30 +1,42 @@
-# React + TypeScript + Vite
+[+] Props
+=======================================================================
+    - props are passed as an object
+    [example]
+    const hello = (props) => {
+        return (
+            <p>Hello {name}, your are {age} years old</p>
+               )
+    }
+    const App = () => {
+        const name = 'joe';
+        const age = '35';
+        return (
+            <Hello name="isaac", age=22 />
+            <Hello name={name}, age={age} />   //variables can be passed as props 
+            )
+    }
+    ---------------------------------------
+    - In above example props is an object such:
+    props = {
+        name: 'isaac',
+        age: 22,
+    }
+    - props object can be destructured into variables
+    [example]
+    const hello = ({name, age}:{name: string, age: number}) => { //ts 
+        return (
+            <p>Hello {name}, your are {age} years old</p>
+               )
+    }
+    - Can also define functions withint component/function and call it when 
+      component is rendered
+    [example]
+    const hello = ({name, age}:{name: string, age: number}) => { //ts 
+    const born_year = () => new Date().getFullYear() - age;
+        return (
+            <p>Hello {name}, your are {age} years old</p>
+            <p>You were probaly born in {born_year()}</p>  //call func at render time
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+               )
+    }
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
