@@ -63,16 +63,16 @@ setTimeout(  //invoke set timeout function
   events
 - See "Reset": Can define an inline function
     - Note: Event handlers are functions! .:. the following is not allowed:
-```javascript
+    ```javascript
         <button onClick={set_counter(counter + 1)}>   //Not valid bc handler must be a function
             Increment
         </button>
-```
-```javascript
+    ```
+    ```javascript
         <button onClick={()=> set_counter(counter + 1)}>   //valid inline handler function
             Increment
         </button>
-```
+    ```
 ---------------------------------------------------------------------------------------------------
 ## Passing state to child components
 ===================================================================================================
@@ -81,7 +81,7 @@ setTimeout(  //invoke set timeout function
 - handler function can be passed as props to child component to call when action is triggered
 - See code: Created <Button /> Component and pass handler function and text to be displayed 
   as props: 
-```js <Button handler={handler_func} text="text" />```
+  ```javascript <Button handler={handler_func} text="text" />```
 ---------------------------------------------------------------------------------------------------
 [+] IMPORTANT!
 ===================================================================================================
