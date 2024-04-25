@@ -80,8 +80,8 @@ setTimeout(  //invoke set timeout function
 - Best practice for passing state is to lift state to closest common ancestor
 - handler function can be passed as props to child component to call when action is triggered
 - See code: Created <Button /> Component and pass handler function and text to be displayed 
-  as props: 
-  ```javascript <Button handler={handler_func} text="text" />```
+  as props
+```javascript <Button handler={handler_func} text="text" />```
 ---------------------------------------------------------------------------------------------------
 [+] IMPORTANT!
 ===================================================================================================
