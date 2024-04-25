@@ -5,6 +5,7 @@
 ## App showcases usage of state, event handling and passing props to child components
 ---------------------------------------------------------------------------------------------------
 ## State
+```js
 const App = () => {
     const [counter , set_counter] = useState<number>(0);
     setTimeout(  //invoke set timeout function
@@ -17,6 +18,7 @@ const App = () => {
         </div>
     )
 }
+```
 - ```js const [counter, set_counter] = useState<number>(0);```
 Defines state: counter is set to initial value of 0 and set_counter function is used to 
 modify state/update counter value
@@ -59,16 +61,16 @@ setTimeout(  //invoke set timeout function
   events
 - See "Reset": Can define an inline function
     - Note: Event handlers are functions! .:. the following is not allowed:
-        ```js
+    ```js
         <button onClick={set_counter(counter + 1)}>   //Not valid bc handler must be a function
             Increment
         </button>
-        ```
-        ```js
+    ```
+    ```js
         <button onClick={()=> set_counter(counter + 1)}>   //valid inline handler function
             Increment
         </button>
-        ```
+    ```
 ---------------------------------------------------------------------------------------------------
 ## Passing state to child components
 ===================================================================================================
