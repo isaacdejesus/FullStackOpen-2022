@@ -245,6 +245,7 @@ const App = () => {
        `<button onClick={handler_function}>button</button>`
 ## Event handler can be a function that calls another function
 ```javascript
+
 const App = () => {
   const [value, setValue] = useState(10)
   const hello = () => {
@@ -258,6 +259,7 @@ const App = () => {
     </div>
   )
 }
+
 ```
 - Kinda pointless. Used to define a single function that handles dif states but 
   not exactly a must. 
