@@ -4,7 +4,7 @@
 - npm create vite@latest NAME -- --template react
   creates app from template
 -----------------------------------------------------------------------
-## Avoid "<div> <p>" errors
+## Avoid div p errors
 - vim tsconfig.json
 Change:
 ```javascript
