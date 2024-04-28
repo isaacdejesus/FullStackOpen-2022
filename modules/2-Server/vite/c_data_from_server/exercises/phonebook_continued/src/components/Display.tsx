@@ -11,3 +11,4 @@ const Display = ({persons}: {persons: Record[]}) => {
     )
 }
 export default Display
+
