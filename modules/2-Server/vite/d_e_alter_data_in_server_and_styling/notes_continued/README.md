@@ -433,3 +433,4 @@ const Footer = () => {
 export default Footer;
 ``` 
 - Above is example of inline styling
+## See section 2e important remarks for more intel on useEffect
