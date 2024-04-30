@@ -1,6 +1,6 @@
 import {Notes} from '../types';
 import note_service from '../services/notes'
-const Note = ({note, notes, set_notes}:{note: Notes, notes: Notes[], set_notes: (arg0: Notes[])=> void} ) => {
+const Note = ({note, notes, set_notes, set_error_msg}:{note: Notes, notes: Notes[], set_notes: (arg0: Notes[])=> void, set_error_msg: (arg0: string | null)=> void} ) => {
     const toggle_importance = (id: string) => {
         const note = notes.find(n=> n.id === id)
         if(note)
@@ -12,9 +12,10 @@ const Note = ({note, notes, set_notes}:{note: Notes, notes: Notes[], set_notes: 
                 set_notes(notes.map(n => n.id !== id ? n : returned_note))
             })
             .catch(error => {
-                alert(
-                    `The note '${note.content}' was already deleted from server`
-                    )
+                set_error_msg(`The note '${note.content}' was already deleted from server`)
+                setTimeout(() => {
+                    set_error_msg(null)
+                }, 5000)
                 set_notes(notes.filter(n => n.id !== id))
             })
         }

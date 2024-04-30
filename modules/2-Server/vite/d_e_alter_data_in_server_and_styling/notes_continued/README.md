@@ -248,3 +248,188 @@ axios
 - https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/async%20%26%20performance/ch3.md
 - https://javascript.info/promise-chaining
 - https://github.com/getify/You-Dont-Know-JS/tree/1st-ed?tab=readme-ov-file
+## Styling react apps
+- Create index.css in src folder
+- import to main.tsx 
+```javascript
+import './index.css'
+```
+- styling can then be created in index.css
+```css
+h1 {
+    color: green;
+    font-style: italic;
+}
+li {
+    color: grey;
+    padding-top: 3px;
+    font-size: 15px;
+}
+
+.note {
+    color: grey;
+    padding-top: 5px;
+    font-size: 15px;
+}
+```
+- CSS rules are made up of selectors and declarations. 
+    - Selector is element the rules/styling apply to
+    - Declarations set property values to selector
+    - A css rule can have many properties
+    - Example. Above h1 is selector and color: green is property/declaration
+- Class selector can be used to style a specific element
+    - NOTE: Above ex, h1 styling applies to all styling but if wanted to only style a
+      given h1 then class selector can be used.
+    - Classes selectors are defined with .classname syntax
+    - Class selectors are applied in app using className='classname'
+    - .note above is example of class selector
+## Improving error messages
+- Convert alert error msg into own component
+- Create Notification component
+```javascript
+const Notification = ({message}: {message: string | null}) => {
+    if(message === null)
+        return null;
+    return (
+        <div className='error'>
+            {message}
+        </div>
+    )
+}
+export default Notification;
+```
+- Next component is place within app and state is created to capture the error msg
+```javascript
+import { useState, useEffect} from 'react';
+import {Notes} from './types';
+import Note from './components/Note';
+import Form from './components/Form'
+import Notification from './components/Notification'
+import note_service from './services/notes'
+const App = () => {
+    const [notes, set_notes] = useState<Notes[]>([])
+    const [show_all, set_show_all] = useState<boolean>(true);
+    const [error_msg, set_error_msg] = useState<string | null>(null)
+    useEffect(() => {
+        note_service
+            .get_all()
+            .then(initial_notes => {
+                set_notes(initial_notes)
+            })
+    }, [])
+    const notes_to_show = show_all
+        ? notes
+        : notes.filter((note:Notes)=> note.important === true)
+    return (
+        <div>
+        <h1>Notes</h1>
+        <Notification message={error_msg} />
+        <div>
+            <button onClick={()=> set_show_all(!show_all)}>
+
+                Show {show_all ? 'important' : 'all'}
+            </button>
+        </div>
+            <ul>
+                {notes_to_show.map((note: Notes) => 
+                    <Note 
+                        key={note.id} 
+                        note={note} 
+                        notes={notes}
+                        set_notes={set_notes}
+                        set_error_msg={set_error_msg}
+                    />
+                )}
+            </ul>
+            <Form notes={notes} set_notes={set_notes}  />
+        </div>
+    )
+}
+export default App
+```
+- NOTE: set_error_msg function is passed to component responsible for catching error
+  so that error can be set to state
+```javascript
+import {Notes} from '../types';
+import note_service from '../services/notes'
+const Note = ({note, notes, set_notes, set_error_msg}:{note: Notes, notes: Notes[], set_notes: (arg0: Notes[])=> void, set_error_msg: (arg0: string | null)=> void} ) => {
+    const toggle_importance = (id: string) => {
+        const note = notes.find(n=> n.id === id)
+        if(note)
+        {
+            const changed_noted = {...note, important: !note.important}
+            note_service
+                .update(id, changed_noted)
+                .then(returned_note => {
+                set_notes(notes.map(n => n.id !== id ? n : returned_note))
+            })
+            .catch(error => {
+                set_error_msg(`The note '${note.content}' was already deleted from server`)
+                setTimeout(() => {
+                    set_error_msg(null)
+                }, 5000)
+                set_notes(notes.filter(n => n.id !== id))
+            })
+        }
+    }
+    const label = note.important
+        ? 'Make not important' : 'Make important'
+    return(
+        <li>{note.content}
+                <button onClick={()=>toggle_importance(note.id)}>{label}</button>
+        </li>
+    )
+}
+export default Note;
+```
+- Here, .catch function catches error and uses the set_error_smg function to set error to state
+- Next a timeout function is set in order to reset the state of error smg to null which makes
+  error flash away
+- Finally notice the sevices GET function has been modified to contain a fake note not in server
+  which is used to test the error msg
+```javascript
+import axios from 'axios'
+import { Note_To_Server} from '../types'
+const base_url = "http://localhost:3001/notes"
+const get_all = () => {
+    //const request = axios.get(base_url);
+    //return request.then(response => response.data);
+    const request = axios.get(base_url)
+    const non_existent = {
+        id: "22234",
+        content: "not saved on server",
+        important: true,
+    }
+    return request.then(response => response.data.concat(non_existent))
+}
+
+const create = (new_object: Note_To_Server) => {
+    const request = axios.post(base_url, new_object);
+    return request.then(response => response.data);
+}
+
+const update = (id: string, new_object: Note_To_Server) => {
+    const request = axios.put(`${base_url}/${id}`, new_object);
+    return request.then(response => response.data);
+}
+export default {get_all, create, update}
+```
+- get_all function adds a fake note at the end of Notes returned used to check error msg
+## Inline styles
+```javascript
+const Footer = () => {
+    const footer_style = {
+        color: 'green',
+        fontStyle: 'italic',
+        fontSize: 16
+    }
+    return (
+        <div style={footer_style}>
+            <br />
+            <em>Note app...Footer</em>
+        </div>
+    )
+}
+export default Footer;
+``` 
+- Above is example of inline styling

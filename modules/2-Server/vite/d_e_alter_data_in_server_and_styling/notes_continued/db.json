@@ -18,7 +18,7 @@
     {
       "id": "05d2",
       "content": "a new note...",
-      "important": false
+      "important": true
     },
     {
       "id": "d174",
@@ -43,7 +43,7 @@
     {
       "id": "e5b2",
       "content": "a new note...",
-      "important": true
+      "important": false
     },
     {
       "id": "e1d3",
@@ -58,11 +58,26 @@
     {
       "id": "a29f",
       "content": "a new note...",
-      "important": false
+      "important": true
     },
     {
       "id": "68aa",
       "content": "Darkened vision",
+      "important": true
+    },
+    {
+      "id": "97f4",
+      "content": "a new note...",
+      "important": false
+    },
+    {
+      "id": "8ec6",
+      "content": "",
+      "important": false
+    },
+    {
+      "id": "b5fb",
+      "content": "",
       "important": true
     }
   ]

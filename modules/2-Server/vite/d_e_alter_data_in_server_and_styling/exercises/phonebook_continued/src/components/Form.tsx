@@ -1,7 +1,8 @@
 import {useState} from 'react'
 import {Record} from '../types'
 import persons_service from '../services/records'
-const Form = ({record, set_person}: {record: Record[], set_person:(arg0: Record[]) => void }) => {
+const Form = ({record, set_person, set_success_msg, set_error_msg}: {record: Record[], 
+    set_person:(arg0: Record[]) => void, set_success_msg: (arg0: string | null)=> void, set_error_msg: (arg0: string | null)=> void}) => {
     const [new_name, set_new_name] = useState<string>('Enter a name')
     const [new_number, set_new_number] = useState<string>('Enter a phone number')
     const submit_handler = (event:any) => {
@@ -20,6 +21,17 @@ const Form = ({record, set_person}: {record: Record[], set_person:(arg0: Record[
                         set_person(record.map(person => person.id !== in_phonebook.id ? person : returned_record))
                         set_new_name('');
                         set_new_number('');
+                        set_success_msg(`User '${returned_record.name}' successfully added to the phonebook`)
+                        setTimeout(() => {
+                            set_success_msg(null);
+                        }, 3000)
+                    })
+                    .catch(error => {
+                        set_error_msg(`User '${in_phonebook.name}' is no longer in the phonebook`)
+                        setTimeout(() => {
+                            set_error_msg(null)
+                        }, 3000)
+                        set_person(record.filter(person => person.id !== in_phonebook.id))
                     })
             }
         }
@@ -35,6 +47,10 @@ const Form = ({record, set_person}: {record: Record[], set_person:(arg0: Record[
                     set_person(record.concat(returned_record));
                     set_new_name('');
                     set_new_number('');
+                    set_success_msg(`User '${returned_record.name}' successfully added to the phonebook`)
+                    setTimeout(() => {
+                        set_success_msg(null);
+                    }, 3000)
                 })
         }
     }
