@@ -254,7 +254,7 @@ app.listen(PORT, () => {
     ```typescript
         npm install --save-dev @types/express
     ```   
-- 2 ways to import modules:
+- 2 ways to import modules: https://www.typescriptlang.org/docs/handbook/modules/introduction.html
     - const express = require('express')
     - import express from 'express'
 - Trial and error? Kinda have to test which of the above methods works? Sometimes need to use a mix
@@ -290,3 +290,112 @@ app.listen(PORT, () => {
     ```
 - Run app: npm run dev
 - localhost:3003/ping 
+- import calculator into index.ts
+    ```typescript
+        export const calculator = (a: number, b: number, op: Operation) : number => {
+    ```
+    ```typescript
+        import express from 'express'
+        import { calculator } from './calculator'
+        const app = express();
+        app.get('/ping', (_req, res) => {
+            res.send('pong');
+        });
+        app.post('/calculate', (req, res) => {
+            const {value1, value2, op} = req.body;
+            const result = calculator(value1, value2, op);
+            res.send({result});
+        });
+        const PORT = 3003;
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    ```
+- NOTE: untyped variables whose type can't be inferred become of type any. Meaning they can be of 
+  any type. Currently, arguments (value1 and value2, op) passed to calculator are of implicitly of
+  type any. Compiler doesn't complain about them being typed any even though "noImplicitAny": true, 
+  is that body field of express request is explicitly typed any. To disallow explicit any ESlint can 
+  be used
+  ```javascript
+        npm install --save-dev eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser
+  ```
+- Ugh, there's supposed to be a .eslintrc.json file but I had to create it
+    ```javascript
+        {
+            "extends": [
+            "eslint:recommended",
+            "plugin:@typescript-eslint/recommended",
+            "plugin:@typescript-eslint/recommended-requiring-type-checking"
+            ],
+            "plugins": ["@typescript-eslint"],
+        "env": {
+            "node": true,
+            "es6": true
+        },
+        "rules": {
+            "@typescript-eslint/semi": ["error"],
+            "@typescript-eslint/explicit-function-return-type": "off",
+            "@typescript-eslint/explicit-module-boundary-types": "off",
+            "@typescript-eslint/restrict-template-expressions": "off",
+            "@typescript-eslint/restrict-plus-operands": "off",
+            "@typescript-eslint/no-unused-vars": [
+                "error",
+                { "argsIgnorePattern": "^_" }
+            ],
+            "no-case-declarations": "off"
+        },
+        "parser": "@typescript-eslint/parser",
+        "parserOptions": {
+            "project": "./tsconfig.json"
+            }
+        }
+    ```
+- Add script to package.json
+    ```javascript
+        {
+            // ...
+            "scripts": {
+                "start": "ts-node index.ts",
+                "dev": "ts-node-dev index.ts",
+                "lint": "eslint --ext .ts ."
+                //  ...
+            },
+            // ...
+        }
+    ```
+- run: npm run lint
+- Ugh, also there is supposed to be error when hovering over problem code but it's not working.
+- disabling eslint warnings and type assertions
+```typescript
+import express from 'express';
+//const express = require('express');
+import { calculator, Operation} from './calculator';
+const app = express();
+
+app.get('/ping', (_req, res) => {
+  res.send('pong');
+});
+
+app.post('/calculate', (req, res) => {
+    //eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const {value1, value2, op} = req.body;
+    if( !value1 || isNaN(Number(value1)) ){
+        return res.status(400).send({error: '...'});
+    }
+    if( !value2 || isNaN(Number(value1)) ){
+        return res.status(400).send({error: '...'});
+    }
+    //eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const result = calculator(Number(value1), Number(value2), op as Operation);
+    res.send({result});
+});
+
+const PORT = 3003;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+```
+- //eslint-diable-next-line is used to disable error/warning
+- op as Operator, tells compiler to consider op as of type Operator. called type assertion.
+  type assertion is used to silence warnings
