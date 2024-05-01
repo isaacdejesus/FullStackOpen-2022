@@ -396,6 +396,6 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 ```
-- //eslint-diable-next-line is used to disable error/warning
-- op as Operator, tells compiler to consider op as of type Operator. called type assertion.
+- //eslint-disable-next-line is used to disable error/warning
+- op as Operator, tells compiler to consider op as of type Operator. Called type assertion.
   type assertion is used to silence warnings
