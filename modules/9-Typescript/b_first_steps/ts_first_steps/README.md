@@ -12,7 +12,7 @@
 - Install both ts-node and typescript locally for current project
     - Create project dir
     - Set up project: npm init
-    - Install ts-node and ts as project dependencies: npm install --save0dev ts-node typescript
+    - Install ts-node and ts as project dependencies: npm install --save-dev ts-node typescript
     - Set up script in package.json: "ts-node": "ts-node"
         ```javascript
         {
