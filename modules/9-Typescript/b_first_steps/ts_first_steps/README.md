@@ -113,10 +113,180 @@ try {
   operation is given, it throws an error.
 ## Type Narrowing
 - The default type of catch block error is unknown. Meaning, need to narrow down the type in order
-  to access content of error. Above, in the try catch, the type of error is narrowed using a type guard.
+  to access content of error. Above, in the try catch, the type of error is narrowed using 
+  instanceof  type guard.
     ```typescript
         if (error instanceof Error) {
             errorMessage += error.message;
         }
     ```
+## @types/{npm_package}
+- TS expects all code to be typed. However, TS library only has typings for code of the TS package.
+- npm packages must also be typed. Can create own types but types are usually available on npm
+- types for existing packages can be found from @types organization within npm. Types can be added
+  to project by installing npm package with name of package: @types/ prefix
+  ```typescript
+        npm install --save-dev @types/react @types/express @types/lodash @types/jest @types/mongoose
+  ```
+- Sometimes npm package includes types .:. there is no need to separately install types
+## Accessing CLI args
+- Installing node type
+    ```typescript
+        npm install --save-dev @types/node
+    ```
+## Adding scripts to package.json to run programs
+    ```typescript
+        {
+            "name": "fs-open",
+            "version" : "1.0.0",
+            "description": "",
+            "main": "index.ts",
+            "scripts": {
+                "ts-node": "ts-node",
+                "multiply": "ts-node multiplier.ts",
+                "calculate": "ts-node calculator.ts"
+            },
+            "author": "",
+            "license": "ISC",
+            "devDependencies": {
+                "ts-node": "^10.5.0",
+                "typescript": "^4.5.5"
+            }
+        }
+    ```
+- Updated code for multiplier:
+    ```typescript
+        interface MultiplyValues {
+            value1: number;
+            value2: number;
+        }
 
+        const parseArguments = (args: string[]): MultiplyValues => {
+            if (args.length < 4) throw new Error('Not enough arguments');
+            if (args.length > 4) throw new Error('Too many arguments');
+
+        if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
+            return {
+                value1: Number(args[2]),
+                value2: Number(args[3])
+            }
+        } else {
+            throw new Error('Provided values were not numbers!');
+            }
+        }
+
+        const multiplicator = (a: number, b: number, printText: string) => {
+        console.log(printText,  a * b);
+        }
+
+        try {
+            const { value1, value2 } = parseArguments(process.argv);
+            multiplicator(value1, value2, `Multiplied ${value1} and ${value2}, the result is:`);
+        } catch (error: unknown) {
+            let errorMessage = 'Something bad happened.'
+            if (error instanceof Error) {
+                errorMessage += ' Error: ' + error.message;
+        }
+        console.log(errorMessage);
+    }
+    ```
+- Multiplier can now be run: npm run multiply arg0 arg 1
+- Note: parseArg function returns an object containing 2 numbers
+## Array syntax
+```typescript
+    let values: number[];
+    let values: Array<number>;
+```
+## tsconfig continued
+- tsconfig contains config on how TS should work in project
+- update tsconfig to following:
+    ```typescript
+        {
+        "compilerOptions": {
+        "target": "ES2022",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "esModuleInterop": true,
+        "moduleResolution": "node"
+            }
+        }
+    ```
+- Finding info about config options
+    - https://www.typescriptlang.org/tsconfig/
+    - http://json.schemastore.org/tsconfig
+## Adding express
+    ```typescript
+        npm i express
+    ```
+- add start script for express to package.json
+    ```typescript
+        {
+            // ..
+            "scripts": {
+                "ts-node": "ts-node",
+                "multiply": "ts-node multiplier.ts",
+                "calculate": "ts-node calculator.ts",
+                "start": "ts-node index.ts"
+             },
+            // ..
+        }
+     ```
+- Create index.ts 
+```typescript
+import express from 'express'
+const app = express();
+
+app.get('/ping', (req, res) => {
+  res.send('pong');
+});
+
+const PORT = 3003;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+```
+- Above results in: "Could not find declaration file for module: express". Means need to install types for express
+    ```typescript
+        npm install --save-dev @types/express
+    ```   
+- 2 ways to import modules:
+    - const express = require('express')
+    - import express from 'express'
+- Trial and error? Kinda have to test which of the above methods works? Sometimes need to use a mix
+    - import ... = require('...')
+- 'noUnusedParameters': true. This rule raises errors when variables are defined but never used. Can be 
+  fixed by prefixing variable with _
+     ```typescript
+        import express from 'express'
+        const app = express();
+        app.get('/ping', (_req, res) => {
+            res.send('pong');
+        });
+        const PORT = 3003;
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    ```
+- Now there won't be any errors bc _req goes unused
+- install ts-node-dev for hot reloading of app
+    ```javascript
+        npm install --save-dev ts-node-dev
+    ```
+- Add script to package.json
+    ```typescript
+        {
+            // ...
+            "scripts": {
+                // ...
+                "dev": "ts-node-dev index.ts",
+            },
+            // ...
+        }
+    ```
+- Run app: npm run dev
+- localhost:3003/ping 
