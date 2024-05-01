@@ -1,0 +1,15 @@
+{
+  "name": "simple_web_server",
+  "version": "1.0.0",
+  "description": "- Recall: Node.js is Javascript runtime based on Google's Chrome V8 Javascript engine - Browser doesn't support newest feats of javascript which is why code running in browser must be transpiled - Node.js on the backend does support latest features of javascript .:. there is no need to transpile code - Create dir for backend - npm init",
+  "main": "index.ts",
+  "scripts": {
+    "start": "node index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "isaac",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.12.7"
+  }
+}
