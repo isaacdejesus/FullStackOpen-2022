@@ -240,26 +240,30 @@ const App = () => {
 ## Event handling 
 - Event handlers should always be:
     - A function/Inline function
-       `<button onClick={()=> set_value(0)}>button</button>`
+        ```javascript
+            <button onClick={()=> set_value(0)}>button</button>
+        ```
     - A reference to a function
-       `<button onClick={handler_function}>button</button>`
+        ```javascript
+            <button onClick={handler_function}>button</button>
+        ```
+
 ## Event handler can be a function that calls another function
+
 ```javascript
-
-const App = () => {
-  const [value, setValue] = useState(10)
-  const hello = () => {
-    const handler = () => console.log('hello world')
-    return handler
+    const App = () => {
+        const [value, setValue] = useState(10)
+        const hello = () => {
+        const handler = () => console.log('hello world')
+            return handler
   }
-  return (
-    <div>
-      {value}
-      <button onClick={hello()}>button</button>
-    </div>
-  )
-}
-
+    return (
+        <div>
+            {value}
+            <button onClick={hello()}>button</button>
+        </div>
+        )
+    }
 ```
 - Kinda pointless. Used to define a single function that handles dif states but 
   not exactly a must. 
