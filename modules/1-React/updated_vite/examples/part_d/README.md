@@ -211,8 +211,8 @@ const App = () => {
   same order
 - .:. Hooks/state should only be called from inside function body trhat defined a rect
   component
-  ```javascript
-  const App = () => {
+```javascript
+    const App = () => {
   // these are ok
   const [age, setAge] = useState(0)
   const [name, setName] = useState('Juha Tauriainen')
@@ -235,8 +235,8 @@ const App = () => {
   return (
     //...
   )
-}
-  ```
+    }
+```
 ## Event handling 
 - Event handlers should always be:
     - A function/Inline function
