@@ -30,13 +30,13 @@ console.log(arr[0]);
     console.log(mappedResults);
     ```
 ## Destructuring assignment
-    ```javascript
+```javascript
     const numbers = [ 1, 2, 3, 4, 5 ];
     const [first, second, ...rest] = numbers; //assigns 1 for first, 2 to second and the remaining 
     //values are stores in a new array called rest.
     console.log(first, second); //prints 1 and 2
     console.log(rest); //prints 3, 4, 5
-    ```
+```
 ## Object literals
 ```javascript
 const object1 = {
