@@ -30,7 +30,7 @@ console.log(arr[0]);
     console.log(mappedResults);
     ```
 ## Destructuring assignment
-    ```javscript
+    ```javascript
     const numbers = [ 1, 2, 3, 4, 5 ];
     const [first, second, ...rest] = numbers; //assigns 1 for first, 2 to second and the remaining 
     //values are stores in a new array called rest.
@@ -101,7 +101,7 @@ const object2 = {
     console.log(person.age);
     ```
 ## classes
-    ```javascript
+```javascript
     class Person {
         constructor(name, age){
             this.name = name;
@@ -115,4 +115,4 @@ const object2 = {
     //create instances of Person
     const joe = new Person("Joe", 33);
     joe.greet();
-    ```
+```
