@@ -200,11 +200,13 @@ export enum Weather {
   Stormy = 'stormy',
   Windy = 'windy',
 }
+```
 - Above allows to check input string is one of the accepted values and type guard written as:
 ```typescript
 const is_weather = (param: string): param is Weather => {
   return Object.values(Weather).map(v => v.toString()).includes(param);
 };
+```
 - Note: Need to take string representation of enum values for comparison. Required for mapping
 - IMPORTANT: Changing Weather to enum causes errors in data/entries.ts bc string != enum. Fixed
   by data to Diary_Entry type with the to_New_Diary_Entry function:

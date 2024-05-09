@@ -1,4 +1,9 @@
-export type Gender = 'male' | 'female' | 'other';
+//export type Gender = 'male' | 'female' | 'other';
+export enum Gender {
+    Male = 'male',
+    Female = 'female',
+    Other = 'other'
+}
 export interface Patient {
     id: string;
     name: string;
