@@ -87,9 +87,11 @@ npm install axios
 - json server can be saved as dev dependency only.
 ```javascript
 npm install json-server --save-dev
+```
 - Then add the following to scripts section of package.json
 ```javascript
 "server": "json-server -p3001 --watch db.json"
+```
 ```javascript
 {
   "name": "notes",
@@ -132,11 +134,13 @@ npm run server
 - Run React app: npm run dev
 - Different ways to install depedencies with npm: The first one is a dependency required by app to run
   the second one is a dev dependency not required by app to run. Only needed in dev mode
-    - ```javascript
-        npm install axios
+  - 
+    ```javascript
+    npm install axios
     ```
-    - ```javascript 
-        npm install json-server --save-dev
+  - 
+    ```javascript 
+    npm install json-server --save-dev
     ```
 ## axios and promises
 - axios is imported like other modules
