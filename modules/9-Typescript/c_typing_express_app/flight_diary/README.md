@@ -525,7 +525,7 @@ export default router;
 - First line is added to disable no unsafe assignment which prevents us from assigning fields of req.body
   to variables.
 - src/services/diary_service.ts becomes
-```typescripts
+```typescript
 import diary_data  from '../../data/diaries';
 import {Diary_Entry, Non_Sensitive_Diary_Entry, New_Diary_Entry} from '../types'
 const diaries: Diary_Entry[] = diary_data as Diary_Entry[];
@@ -567,3 +567,4 @@ export default {
 - Finally, a new entry is created by creating a new object with data provided by user + id and new object 
   is added to array containing diaries data. add_diary returns the newly created entry which is returned 
   in POST request to front end.
+## SEE Proofing Request file

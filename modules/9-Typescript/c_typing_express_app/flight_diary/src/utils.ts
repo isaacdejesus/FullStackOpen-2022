@@ -1,13 +1,13 @@
 import { New_Diary_Entry, Weather, Visibility} from './types';
-    const parse_comment = (comment: unknown): string => {
-        if(!comment || !is_string(comment)){
-            throw new Error('Incorrect or missing comment');
-        }
-        return comment;
-    } 
-    const is_string = (text: unknown): text is string => {
-        return typeof text === 'string' || text instanceof String;
-    };
+const parse_comment = (comment: unknown): string => {
+    if(!comment || !is_string(comment)){
+        throw new Error('Incorrect or missing comment');
+    }
+    return comment;
+} 
+const is_string = (text: unknown): text is string => {
+    return typeof text === 'string' || text instanceof String;
+};
 
 const is_date = (date: string): boolean => {
     return Boolean(Date.parse(date));

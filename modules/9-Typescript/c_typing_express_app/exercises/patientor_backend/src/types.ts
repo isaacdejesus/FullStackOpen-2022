@@ -15,3 +15,4 @@ export interface Diagnoses {
 }
 
 export type Non_Sensitive_Patient_Entry = Omit<Patient, 'ssn'>;
+export type New_Patient_Entry = Omit<Patient, 'id'>;
