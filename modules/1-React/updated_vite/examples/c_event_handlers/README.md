@@ -1,9 +1,7 @@
 ## To run the app
  - npm install
  - npm run dev
----------------------------------------------------------------------------------------------------
 ## App showcases usage of state, event handling and passing props to child components
----------------------------------------------------------------------------------------------------
 ## State
 ```javascript
 const App = () => {
@@ -34,17 +32,15 @@ setTimeout(  //invoke set timeout function
 - Above function calls the set_counter every seconds and updates the counter + 1
   set_counter updates the state/ the value of counter which in turn causes component/page to
   re-render
----------------------------------------------------------------------------------------------------
 ## Event Handling
 - Event handler are linked to a function that is triggered in respose to user interaction. 
-  [Example]
-  ```js 
+  ```typescript
   import { useState } from 'react'
   const App = () => {
     const [counter , set_counter] = useState<number>(0);
     const handle_click = () => {
         set_counter(counter + 1)
-            }
+        }
     return (
         <div>
             <div>{counter}</div>
@@ -73,9 +69,7 @@ setTimeout(  //invoke set timeout function
             Increment
         </button>
     ```
----------------------------------------------------------------------------------------------------
 ## Passing state to child components
-===================================================================================================
 - It is recommended to create small & reusable components. 
 - Best practice for passing state is to lift state to closest common ancestor
 - handler function can be passed as props to child component to call when action is triggered
@@ -84,8 +78,5 @@ setTimeout(  //invoke set timeout function
     ```javascript 
    <Button handler={handler_func} text="text" />
    ```
----------------------------------------------------------------------------------------------------
 ## IMPORTANT!
-===================================================================================================
 - Changes to state cause re-rendering of component/page
----------------------------------------------------------------------------------------------------
