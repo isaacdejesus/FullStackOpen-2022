@@ -1,6 +1,6 @@
 ## JSON server to fake retrieving data from db
 - create db.json file and put data in it
-```javascript
+```typescript
 {
   "notes": [
     {
@@ -23,12 +23,12 @@
 ```
 - Above is mock data coming from server
 - Next install json-server
-```javascript
+```typescript
 npm install -g json-server  //globally
 npm install json-server   //for current project only
 ```
 - run json server
-```javascript
+```typescript
 json-server --port 3001 --watch db.json
 ```
 - install json lite extention on firefox to view json content on browser
@@ -48,11 +48,11 @@ json-server --port 3001 --watch db.json
   Project dependencies are listed in the package.json file. When npm install is run at the
   beginning of project, npm checks package.json for project dependencies and installs them
 - Install axios library/package for interacting with server
-```javascript
+```typescript
 npm install axios
 ```
 - Example package.json: It has previously installed json-server and axios as dependencies
-```javascript
+```typescript
 {
   "name": "notes",
   "private": true,
@@ -85,14 +85,14 @@ npm install axios
 }
 ```
 - json server can be saved as dev dependency only.
-```javascript
+```typescript
 npm install json-server --save-dev
 ```
 - Then add the following to scripts section of package.json
-```javascript
+```typescript
 "server": "json-server -p3001 --watch db.json"
 ```
-```javascript
+```typescript
 {
   "name": "notes",
   "private": true,
@@ -126,7 +126,7 @@ npm install json-server --save-dev
 }
 ``` 
 - Now can run below command and json server will auto start
-```javascript
+```typescript
 npm run server
 ```
 - NOTE: db.json file must be in root dir. Not in src folder
@@ -135,18 +135,18 @@ npm run server
 - Different ways to install depedencies with npm: The first one is a dependency required by app to run
   the second one is a dev dependency not required by app to run. Only needed in dev mode
   - 
-    ```javascript
+    ```typescript
     npm install axios
     ```
   - 
-    ```javascript 
+    ```typescript 
     npm install json-server --save-dev
     ```
 ## axios and promises
 - axios is imported like other modules
-```javascript
+```typescript
 import axios from 'axios'
-const promise = axios.get('http://localhost:3001/notes')
+const promise = axios.get<Notes[]>('http://localhost:3001/notes')
 console.log(promise)
 ```
 - Axios GET returns a promise. A promise is an object that represents an asynch operation. Promise can have
@@ -155,17 +155,17 @@ console.log(promise)
     - Fulfilled/Resolved: Means op has been completed and final value is available
     - Rejected/Failed: Means error prevented final value from being determined
 - Accessing the result of a promise is done via event handler using the then method
-```javascript
-const promise = axios.get('http://localhost:3001/notes')
+```typescript
+const promise = axios.get<Notes[]>('http://localhost:3001/notes')
 promise.then(response => {
   console.log(response)
 })
 ```
 - Callback function registeered by then method returns a response object. response object contains
   essential data related to HTTP GET request such as data, status code and headers.
-```javascript
+```typescript
 axios
-  .get('http://localhost:3001/notes')
+  .get<Notes[]>('http://localhost:3001/notes')
   .then(response => {
     const notes = response.data
     console.log(notes)
@@ -174,7 +174,7 @@ axios
 - Data returned by server is plain text. Server specifies data format to be application/json using
   content-type header. Axios library can be used to turn plain text to correct format.
 - Code for fetching data from server using axios
-```javascript
+```typescript
 import { useState, useEffect} from 'react';
 import axios from 'axios'
 import {Notes} from './types';
@@ -185,7 +185,7 @@ const App = () => {
     const [show_all, set_show_all] = useState<boolean>(true);
     useEffect(() => {
         axios
-            .get('http://localhost:3001/notes')
+            .get<Notes[]>('http://localhost:3001/notes')
             .then(response => {
                 set_notes(response.data)
             })
@@ -215,13 +215,13 @@ const App = () => {
 export default App
 ```
 - useEffect() hook is required when fetching data from server
-```javascript
+```typescript
 const App = () => {
     const [notes, set_notes] = useState<Notes[]>([])
     const [show_all, set_show_all] = useState<boolean>(true);
     useEffect(() => {
         axios
-            .get('http://localhost:3001/notes')
+            .get<Notes[]>('http://localhost:3001/notes')
             .then(response => {
                 set_notes(response.data)
             })
@@ -231,14 +231,14 @@ const App = () => {
 - Next useEffect() is executed after component/page renders
 - Axios begins fetching data from server. 
 - Once data fetched is returned/available from promise, it is stores to state
-    ```javascript
+    ```typescript
         set_notes(response.data);
     ```
 - useEffect() takes 2 parameters. Better visualized in code below
-```javascript
+```typescript
 const hook = () => {
   axios
-    .get('http://localhost:3001/notes')
+    .get<Notes[]>('http://localhost:3001/notes')
     .then(response => {
       setNotes(response.data)
     })
@@ -250,19 +250,19 @@ useEffect(hook, [])
 - Second parameter specifies when or how often the effect should run. If second parameter is [], then 
   default behavior is to only run effect after first/initial render
 - useEffect() can be written in following ways. But second way is preferable:
-```javascript
+```typescript
 useEffect(() => {
   const eventHandler = response => {
     setNotes(response.data)
   }
-  const promise = axios.get('http://localhost:3001/notes')
+  const promise = axios.get<Notes[]>('http://localhost:3001/notes')
   promise.then(eventHandler)
 }, [])
 ```
-```javascript
+```typescript
 useEffect(() => {
   axios
-    .get('http://localhost:3001/notes')
+    .get<Notes[]>('http://localhost:3001/notes')
     .then(response => {
       setNotes(response.data)
     })

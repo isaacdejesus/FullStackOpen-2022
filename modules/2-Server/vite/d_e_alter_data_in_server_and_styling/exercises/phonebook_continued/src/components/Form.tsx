@@ -5,7 +5,7 @@ const Form = ({record, set_person, set_success_msg, set_error_msg}: {record: Rec
     set_person:(arg0: Record[]) => void, set_success_msg: (arg0: string | null)=> void, set_error_msg: (arg0: string | null)=> void}) => {
     const [new_name, set_new_name] = useState<string>('Enter a name')
     const [new_number, set_new_number] = useState<string>('Enter a phone number')
-    const submit_handler = (event:any) => {
+    const submit_handler = (event: React.SyntheticEvent) => {
         event.preventDefault() 
         //check if record/person already in phonebook
         const in_phonebook = record.find((person:Record) => person.name === new_name);
@@ -54,10 +54,10 @@ const Form = ({record, set_person, set_success_msg, set_error_msg}: {record: Rec
                 })
         }
     }
-    const name_change_handler = (event:any) => {
+    const name_change_handler = (event: React.ChangeEvent<HTMLInputElement>) => {
         set_new_name(event.target.value) ;
     }
-    const number_change_handler = (event:any) => {
+    const number_change_handler = (event: React.ChangeEvent<HTMLInputElement>) => {
         set_new_number(event.target.value) ;
     }
     return(

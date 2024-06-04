@@ -8,7 +8,7 @@ const App = () => {
     const [show_all, set_show_all] = useState<boolean>(true);
     useEffect(() => {
         axios
-            .get('http://localhost:3001/notes')
+            .get<Notes[]>('http://localhost:3001/notes')
             .then(response => {
                 set_notes(response.data)
             })

@@ -3,7 +3,7 @@ import {Record} from '../types'
 const Form = ({record, set_person}: {record: Record[], set_person:(arg0: Record[]) => void }) => {
     const [new_name, set_new_name] = useState<string>('Enter a name')
     const [new_number, set_new_number] = useState<string>('Enter a phone number')
-    const submit_handler = (event:any) => {
+    const submit_handler = (event: React.SyntheticEvent) => {
         event.preventDefault() 
         const new_object = {
             id: record.length + 1,
@@ -17,14 +17,17 @@ const Form = ({record, set_person}: {record: Record[], set_person:(arg0: Record[
             alert(`${new_name} already in phonebook`);
         else  //add to phonebook
         {
-            set_person(record.concat(new_object))
-            set_new_name('')
+            set_person(record.concat(new_object));
+            set_new_name('');
+            set_new_number('');
         }
     }
-    const name_change_handler = (event:any) => {
+    const name_change_handler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
         set_new_name(event.target.value) ;
     }
-    const number_change_handler = (event:any) => {
+    const number_change_handler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
         set_new_number(event.target.value) ;
     }
     return(
