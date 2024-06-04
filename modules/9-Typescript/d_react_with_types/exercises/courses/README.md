@@ -137,3 +137,61 @@ interface course_part_background extends course_part_base  {
   types can't be accesses unless type is narrowed even further.
 - Type can be narrowed by using a switch case and using "kind" attribute as unique identifier for each 
   object type. 
+```typescript
+course_parts.forEach(part => {
+    switch(part.kind){
+        case "basic":
+            console.log(part.name, part.description, part.exercise_count)     ;
+            break;
+        case "group":
+            console.log(part.name, part.exercise_count, part.group_project_count);
+            break;
+            case "background":
+                console.log(part.name, part.description, part.exercise_count, part.background_material);
+                break;
+            default:
+                break;
+        }
+})
+```
+- The switch uses the "kind" attribute of each object to narrow the type of each object allowing access to
+  the correct attributes of each object based on type which is determined by "kind" attribute
+- *discriminated union* is type narrowing of union based on literal attribute such as "kind"
+- Note: Above type narrowing can also be done with "if"
+```typescript
+course_parts.forEach(part => {
+    if(part.kind === 'background'){
+        console.log(part.name, part.description, part.exercise_count, part.background_material);
+    }
+})
+```
+## Exhaustive type checking
+Can be used a default case to handle unexpected value/input. Ex. Object passed doesn't match any of the object types
+expected. In this case, a function that accepts a value of type never and returns type never is used to handle error
+```typescript
+const assert_never = (value : never): never => {
+    throw new Error(`Unhandled discriminated union member: ${JSON.striniify(value)}`);
+};
+```
+- The assert_never() function can then be used as default to accept incoming object that doesn't match any of the cases
+```typescript
+course_parts.forEach(part => {
+    switch(part.kind){
+        case "basic":
+            console.log(part.name, part.description, part.exercise_count)     ;
+            break;
+        case "group":
+            console.log(part.name, part.exercise_count, part.group_project_count);
+            break;
+            case "background":
+                console.log(part.name, part.description, part.exercise_count, part.background_material);
+                break;
+            default:
+                return assert_never(part);
+                break;
+        }
+})
+```
+- Now whenever an object type doesn't match the expected type checked for in the switch it gets handled by default
+- See Part component for real example of switch
+- Notes continued in notes app README
