@@ -2,11 +2,11 @@ import {useState} from 'react'
 import {Notes} from '../types'
 const Form = ({notes, set_notes}:{notes: Notes[], set_notes: (arg0: Notes[])=> void} ) => {
     const [new_note, add_new_note] = useState<string>('a new note...')
-    const on_change = (event:any) => {
+    const on_change = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         add_new_note(event.target.value)
     }
-    const submit_handler =(event: any) => {
+    const submit_handler =(event: React.SyntheticEvent) => {
         event.preventDefault();
         const note_object = {
             content: new_note,

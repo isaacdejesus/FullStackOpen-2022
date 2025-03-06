@@ -17,24 +17,24 @@
     - Json server requires data to be sent in JSON format
     - Content-Type header with value application/json
 ## Sending data to server
-```javascript
+```typescript
 import {useState} from 'react'
 import {Notes} from '../types'
 import axios from 'axios'
 const Form = ({notes, set_notes}:{notes: Notes[], set_notes: (arg0: Notes[])=> void} ) => {
     const [new_note, add_new_note] = useState<string>('a new note...')
-    const on_change = (event:any) => {
+    const on_change = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         add_new_note(event.target.value)
     }
-    const submit_handler =(event: any) => {
+    const submit_handler =(event: React.SyntheticEvent) => {
         event.preventDefault();
         const note_object = {
             content: new_note,
             important: Math.random() < .5,
         }
         axios
-            .post('http://localhost:3001/notes', note_object)
+            .post<Notes>('http://localhost:3001/notes', note_object)
             .then((response: any) => {
                 set_notes(notes.concat(response.data));
                 add_new_note('');
@@ -68,7 +68,7 @@ export default Form
   .:. server will return newly created note with id created at server side
   - For some reason json server is returning ids as strings so had to change type of id to string
 ## HTTP PUT to update data on server
-```javascript
+```typescript
 import {Notes} from '../types';
 import axios from 'axios'
 const Note = ({note, notes, set_notes}:{note: Notes, notes: Notes[], set_notes: (arg0: Notes[])=> void} ) => {
@@ -78,7 +78,7 @@ const Note = ({note, notes, set_notes}:{note: Notes, notes: Notes[], set_notes: 
         if(note)
         {
             const changed_noted = {...note, important: !note.important}
-            axios.put(url, changed_noted). then(response => {
+            axios.put<Notes>(url, changed_noted). then(response => {
                 set_notes(notes.map(n => n.id !== id ? n : response.data))
             })
         }
@@ -98,21 +98,21 @@ export default Note;
   case change importance of note then using HTTP PUT to send updates note to server and finally, taking 
   response returned from server and adding note to state
 - I really don't understand why the following is needed.
-```javascript
+```typescript
 <button onClick={()=>toggle_importance(note.id)}>{label}</button>
 ```
 - Is it bc function takes argument? Other handler functions take arg but it's event so not something
   we need to manually pass as arg. Ugh
 - NOTE: Both PUT and POST take url and object content as args. However, POST URL is /notes
   meanwhile PUT URL is specific resource to be mofied /notes/id
-```javascript
+```typescript
     const toggle_importance = (id: string) => {
         const url = `http://localhost:3001/notes/${id}`
         const note = notes.find(n=> n.id === id)
         if(note)
         {
             const changed_noted = {...note, important: !note.important}
-            axios.put(url, changed_noted). then(response => {
+            axios.put<Notes>(url, changed_noted). then(response => {
                 set_notes(notes.map(n => n.id !== id ? n : response.data))
             })
         }
@@ -122,12 +122,12 @@ export default Note;
 - Second line declares a variable to look for and hold note to be updated
 - Next if note is found, a new note with contents of existing note is made and changes made
   to new copied note
-  ```javascript
+  ```typescript
    const changed_noted = {...note, important: !note.important}
   ```
 - Recall {...note} creates a new object with copies of all properties of original note object
   to be changed
-```javascript
+```typescript
    const changed_noted = {...note, important: !note.important}
 ```
 - {...note, important: true} means copy all properties of object to be modified but only modify the
@@ -138,20 +138,20 @@ export default Note;
 ## Extracting communication with backend to separate module
 - Create new dir within src/ called services and a file called notes.tsx
 - notes.tsx will contain all logic to communicate with server in form of functions
-```javascript
+```typescript
 import axios from 'axios'
 import { Note_To_Server} from '../types'
 const base_url = "http://localhost:3001/notes"
 const get_all = () => {
-    const request = axios.get(base_url);
+    const request = axios.get<Notes[]>(base_url);
     return request.then(response => response.data);
 }
 const create = (new_object: Note_To_Server) => {
-    const request = axios.post(base_url, new_object);
+    const request = axios.post<Notes>(base_url, new_object);
     return request.then(response => response.data);
 }
 const update = (id: string, new_object: Note_To_Server) => {
-    const request = axios.put(`${base_url}/${id}`, new_object);
+    const request = axios.put<Notes>(`${base_url}/${id}`, new_object);
     return request.then(response => response.data);
 }
 export default {get_all, create, update}
@@ -164,7 +164,7 @@ export default {get_all, create, update}
 - At end of module, we export the functions to be used in other files
 ## Using the server communication module functions
 - Code to fetch notes from server becomes/send GET request
-```javascript
+```typescript
     useEffect(() => {
         note_service
             .get_all()
@@ -174,8 +174,8 @@ export default {get_all, create, update}
     }, [])
 ```
 - Code to send POST request to server becomes
-```javascript
-    const submit_handler =(event: any) => {
+```typescript
+    const submit_handler =(event: React.SyntheticEvent) => {
         event.preventDefault();
         const note_object = {
             content: new_note,
@@ -183,14 +183,14 @@ export default {get_all, create, update}
         }
         note_service
             .create(note_object)
-            .then(returned_noted => {
-                set_notes(notes.concat(returned_noted));
+            .then(returned_note => {
+                set_notes(notes.concat(returned_note));
                 add_new_note('');
             })
     }
 ```
 - Code to update resource/note or send PUT request becomes
-```javascript
+```typescript
     const toggle_importance = (id: string) => {
         const note = notes.find(n=> n.id === id)
         if(note)
@@ -212,9 +212,9 @@ export default {get_all, create, update}
 - If a request fails, the event handler registered with the catch method is called
 - .catch method is placed at end of promise chain.
 - Making HTTP requests creates a promise chain
-```javascript
+```typescript
 axios
-  .put(`${baseUrl}/${id}`, newObject)
+  .put<Type>(`${baseUrl}/${id}`, newObject)
   .then(response => response.data)
   .then(changedNote => {
     // ...
@@ -224,7 +224,7 @@ axios
   })
 ```
 - Above is a promise chain of .then callbacks followed by .catch to handle error
-```javascripts
+```typescript
     const toggle_importance = (id: string) => {
         const note = notes.find(n=> n.id === id)
         if(note)
@@ -286,7 +286,7 @@ li {
 ## Improving error messages
 - Convert alert error msg into own component
 - Create Notification component
-```javascript
+```typescript
 const Notification = ({message}: {message: string | null}) => {
     if(message === null)
         return null;
@@ -349,7 +349,7 @@ export default App
 ```
 - NOTE: set_error_msg function is passed to component responsible for catching error
   so that error can be set to state
-```javascript
+```typescript
 import {Notes} from '../types';
 import note_service from '../services/notes'
 const Note = ({note, notes, set_notes, set_error_msg}:{note: Notes, notes: Notes[], set_notes: (arg0: Notes[])=> void, set_error_msg: (arg0: string | null)=> void} ) => {
@@ -394,7 +394,7 @@ const base_url = "http://localhost:3001/notes"
 const get_all = () => {
     //const request = axios.get(base_url);
     //return request.then(response => response.data);
-    const request = axios.get(base_url)
+    const request = axios.get<Notes[]>(base_url)
     const non_existent = {
         id: "22234",
         content: "not saved on server",
@@ -404,12 +404,12 @@ const get_all = () => {
 }
 
 const create = (new_object: Note_To_Server) => {
-    const request = axios.post(base_url, new_object);
+    const request = axios.post<Notes>(base_url, new_object);
     return request.then(response => response.data);
 }
 
 const update = (id: string, new_object: Note_To_Server) => {
-    const request = axios.put(`${base_url}/${id}`, new_object);
+    const request = axios.put<Notes>(`${base_url}/${id}`, new_object);
     return request.then(response => response.data);
 }
 export default {get_all, create, update}

@@ -7,7 +7,7 @@ const App = () => {
     const [persons, set_persons] = useState<Record[]>([]) 
     useEffect(()=> {
         axios
-            .get('http://localhost:3001/persons')
+            .get<Record[]>('http://localhost:3001/persons')
             .then(response => {
                 set_persons(response.data)
             })

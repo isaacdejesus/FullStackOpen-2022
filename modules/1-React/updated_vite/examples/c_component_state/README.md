@@ -30,7 +30,7 @@
                )
     }
 ```
-- Can also define functions withint component/function and call it when 
+- Can also define functions within component/function and call it when 
   component is rendered
 ```javascript
     const hello = ({name, age}:{name: string, age: number}) => { //ts 

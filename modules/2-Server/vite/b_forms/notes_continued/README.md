@@ -4,7 +4,7 @@ npm install
 npm run dev
 ```
 ## Saving data to component state
-```javascript
+```typescript
 import { useState } from 'react';
 import {Notes} from './types';
 import Note from './components/Note';
@@ -33,7 +33,7 @@ export default App
 - As explained above. Need to keep track of Notes/content being manipulated on state
 - Whenever user uses form to submit new Note/content, it gets added to state which 
   results in re-rendering of page, updating content being displayed
-```javascript
+```typescript
 import { useState } from 'react';
 import {Notes} from './types';
 import Note from './components/Note';
@@ -57,16 +57,16 @@ export default App
 - .. means bc
 - .. Form component is own module, need to pass notes from state and function needed to update state
   to Form component so they can be used by Form component
-```javascript
+```typescript
 import {useState} from 'react'
 import {Notes} from '../types'
 const Form = ({notes, set_notes}:{notes: Notes[], set_notes: (arg0: Notes[])=> void} ) => {
     const [new_note, add_new_note] = useState<string>('a new note...')
-    const on_change = (event:any) => {
+    const on_change = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         add_new_note(event.target.value)
     }
-    const submit_handler =(event: any) => {
+    const submit_handler =(event: React.SyntheticEvent) => {
         event.preventDefault();
         const note_object = {
             content: new_note,

@@ -1,26 +1,22 @@
 ## Run app
 - npm install
 - npm run dev
----------------------------------------------------------------------------------------------------
 ## App showcases:
 - Complex state
 - Arrays
 - Conditional rendering
----------------------------------------------------------------------------------------------------
 ## Complex state:
 - Suppose need to keep track of 2+ states. Could create a hook for each state
-[example]
-```js
+```typescript
 const [left, set_left] = useState(0);
 const [right, set_right] = useState(0);
 ```
 - However, a more efficient way is to create state as an object containing both hooks
-```js
+```typescript
 const [clicks, set_click] = useState({left: 0, right: 0})
 ```
----------------------------------------------------------------------------------------------------
 ## Neater way to update complex/object state
-```javascript
+```typescript
 const handleLeftClick = () => {
   const newClicks = { 
     ...clicks, 
@@ -44,7 +40,7 @@ const handleRightClick = () => {
     - `{...clicks, right: clicks.right + 1}` : Means copy all properties of original object and
       only update the value of right property by incrementing by 1
 - Above can be further simplified into:
-```javascript
+```typescript
 const handleLeftClick = () =>
   setClicks({ ...clicks, left: clicks.left + 1 })
 
@@ -53,16 +49,15 @@ const handleRightClick = () =>
 ```
 - NOTE: Mutating state directly should be avoided due to unexpected side effetcs. .:. following 
   does work but shouldn't be done
-```javascript
+```typescript
 const handleLeftClick = () => {
   clicks.left++
   setClicks(clicks)
 }
 ```
 - NOTE: If possible avoid storing state in an object bc in this case there was no real benefit
----------------------------------------------------------------------------------------------------
 ## Arrays as state
-```javascript
+```typescript
 const App = () => {
     const [left, set_left] = useState<number>(0)
     const [right, set_right] = useState<number>(0)
@@ -90,9 +85,8 @@ const App = () => {
 - all_clicks is an arr of strings, ini to '[]'
 - Handler functions now add 'L' or 'R' depending on click type, when updating state
 - NOTE: As stated before, state should not be modified directly .:. concat is used instead of push
----------------------------------------------------------------------------------------------------
 ## State is updated Async
-```javascript
+```typescript
 const App = () => {
     const [left, set_left] = useState<number>(0)
     const [right, set_right] = useState<number>(0)
@@ -124,7 +118,7 @@ const App = () => {
 - Above would result in total always being less than actual. Ex. LR will display total: 1
   Happens bc state is async, state will update at some point before component is rendered 
   != immediately. Meaning flow of code might not return in order it was writen
-  ```javascript
+  ```typescript
     const handle_right_click = () => {
         set_all_clicks(all_clicks.concat('R'));
         set_right(right + 1);
@@ -137,7 +131,7 @@ const App = () => {
   value is passed to functions depending on updated value.
   <honestly, idk if this explanation is correct. It makes sense but haha,idk>
 - Following code fixes the error:
-```javascript
+```typescript
     const handle_left_click = () => {
         set_all_clicks(all_clicks.concat('L'));
         const updated_left = left + 1;
@@ -151,9 +145,8 @@ const App = () => {
         set_total(left + updated_right)
     }
 ```
----------------------------------------------------------------------------------------------------
 ## Conditional rendering
-```javascript
+```typescript
 const History = ({clicks_data}: {clicks_data: string[]}) => {
     if (clicks_data.length === 0){
         return (
@@ -211,7 +204,7 @@ const App = () => {
   same order
 - .:. Hooks/state should only be called from inside function body trhat defined a rect
   component
-```javascript
+```typescript
     const App = () => {
   // these are ok
   const [age, setAge] = useState(0)
@@ -240,17 +233,17 @@ const App = () => {
 ## Event handling 
 - Event handlers should always be:
     - A function/Inline function
-        ```javascript
+        ```typescript
             <button onClick={()=> set_value(0)}>button</button>
         ```
     - A reference to a function
-        ```javascript
+        ```typescript
             <button onClick={handler_function}>button</button>
         ```
 
 ## Event handler can be a function that calls another function
 
-```javascript
+```typescript
     const App = () => {
         const [value, setValue] = useState(10)
         const hello = () => {
@@ -268,7 +261,7 @@ const App = () => {
 - Kinda pointless. Used to define a single function that handles dif states but 
   not exactly a must. 
 ## Don't define components within components
-```javascript
+```typescript
 // This is the right place to define a component
 const Button = (props) => (
   <button onClick={props.handleClick}>
